@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "@shopify/shopify-api": "^8.1.1",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "shopifyapp": "^1.0.3"
+  },
+  "devDependencies": {
+    "express": "^4.18.2",
+    "ndb": "^1.1.5",
+    "nodemon": "^3.0.2"
+  },
+  "name": "nodeform",
+  "version": "1.0.0",
+  "description": "shopifyapp",
+  "main": "nodemon app.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "debug": "ndb server.js"
+  },
+  "author": "Pravesh Kumar",
+  "license": "ISC"
+}
