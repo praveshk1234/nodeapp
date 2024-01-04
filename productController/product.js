@@ -2,14 +2,11 @@ const axios = require('axios');
 
 exports.findAll = async (req, res) => {
  fetchdata.then((data)=>{
-  res.send({name:data['products']});
+  res.render('index',{ title: 'Hey',name:data['products']});
   });
   
 };
-
-
-
-  
+ 
   let config = {
     method: 'get',
     maxBodyLength: Infinity,
