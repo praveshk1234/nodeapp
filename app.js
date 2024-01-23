@@ -1,17 +1,24 @@
 const express = require('express');
-let ejs = require('ejs');
-const productRouter = require("./routes/productRoutes.js");
-const app = express();
-app.use(express.json());
-app.set('views', './views');
-app.set('view engine', 'ejs');
-app.use('/', productRouter);
+const morgan = require('morgan');
+const AppError = require('./utils/appError')
+const globalErrorHandle = require('./controller/errorController')
 
-const logger = function (req, res, next) {
-  console.log('LOGGED')
-  next()
+const userRouter = require("./routes/userRoutes.js");
+
+const app = express();
+
+if(process.env.NODE_ENV === 'development'){
+  app.use(morgan('dev'));
 }
-app.use(logger);
-app.listen(3000, () => {
-    console.log(`Example app listening on port`)
-  })
+app.use(express.json());
+
+app.use('/', userRouter);
+
+app.all('*',(req,res,next) =>{
+  next(new AppError(`Can't find ${req.originalUrl} on this server`,404))
+})
+
+
+app.use(globalErrorHandle);
+
+module.exports =app
