@@ -6,12 +6,12 @@ const {tokenTypes} = require('../config/tokens');
 const tokenSchema= mongoose.Schema(
     {
         token:{
-            String,
+          type: String,
             required:true,
             index:true,
         },
         user:{
-            type:mongoose.SchemaType.ObjectId,
+            type:mongoose.SchemaTypes.ObjectId,
             ref:'User',
             required:true,
         },
@@ -32,9 +32,10 @@ const tokenSchema= mongoose.Schema(
     {
         timestamps:true,
     }
-)
+);
 
 tokenSchema.plugin(toJSON);
 
 const Token = mongoose.model('Token',tokenSchema);
+
 module.exports = Token;
