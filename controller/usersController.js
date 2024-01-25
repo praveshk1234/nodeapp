@@ -56,35 +56,10 @@ exports.createUser =catchAsync( async (req,res,next)=>{
 
 })
 
-exports.updateUser = async(req,res) => {
-try{
-    const {error} = validate.updateValidate.validate(req.body)
-    if(error){
-        throw new Error(error.details[0].message)
-    }
-    const user =await  User.findByIdAndUpdate(req.params.id,req.body,
-    {
-        new: true,
-        runValidators: true
-      });
-
-
-res.status(200).json({
-    status: 'success',
-    data: {
-      user 
-    }
-  });
-}
-catch(err){
-    res.status(400).json(
-        {
-            status:"fail",
-            data:err.message
-        }
-    )
-}
-}
+exports.updateUser = catchAsync(async(req,res) => {
+  const user =await  User.findByIdAndUpdate(req.params.userId,req.body);
+  res.send(user)
+})
 
 exports.deleteUser = async (req,res) =>{
     try{

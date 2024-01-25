@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
+const {roles} = require('../config/roles')
 const userSchema = new mongoose.Schema(
     {
         name:{
@@ -14,6 +14,11 @@ const userSchema = new mongoose.Schema(
             unique: true,
             required: [true, 'Please provide your email'],
             validate:[validator.isEmail, 'Please provide a valid email']
+        },
+        role:{
+            type:String,
+            enum:roles,
+            default:'user'
         },
         password:{
             type:String,
