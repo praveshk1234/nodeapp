@@ -4,7 +4,7 @@ const httpStatus = require('http-status');
 const config = require('../config/config');
 const userService = require('./user.service');
 const {Token}= require('../models/token.model');
-const AppError = require('../utils/AppError');
+const AppError = require('./../utils/appError');
 const {tokenTypes} = require('../config/tokens');
 
 const generateToken = (userId,expires,type,secret=config.jwt.secret) =>{
@@ -66,11 +66,22 @@ const generateResetPasswordToken = async(email)=>{
     throw new AppError('No users found with this ',httpStatus.NOT_FOUND)
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes,'minutes');
-  const resetPasswordToken = generateToken(user.id,expires,tokenTypes.RESET_PASSWORD)
+  const resetPasswordToken = generateToken(user.id,expires,tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken,user.id,expires,tokenTypes.RESET_PASSWORD);
+  return resetPasswordToken;
+}
+
+const generateVerifyEmailToken = async(user) =>{
+  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes,'minutes');
+  const verifyEmailToken = generateToken(user.id,expires,tokenTypes.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken,user.id,expires,tokenTypes.VERIFY_EMAIL);
+  return verifyEmailToken;
 }
 module.exports = {
   generateToken,
   saveToken,
   generateAuthTokens,
-  verifyToken
+  verifyToken,
+  generateResetPasswordToken,
+  generateVerifyEmailToken,
 }
